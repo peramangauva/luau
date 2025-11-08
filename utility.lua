@@ -62,6 +62,10 @@ local function remBodyMovers(part)
     if BP then BP:Destroy() end
     local BG = part:FindFirstChildOfClass('BodyGyro')
     if BG then BG:Destroy() end
+    local BV = part:FindFirstChildOfClass('BodyVelocity')
+    if BV then BV:Destroy() end
+    local BF = part:FindFirstChildOfClass('BodyForce')
+    if BF then BF:Destroy() end
 end
 
 
