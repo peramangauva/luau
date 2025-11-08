@@ -34,7 +34,7 @@ function setBodyMovers(part, cframe, vel, force)
     BG.P = 100000
     BG.D = 100
     BG.MaxTorque = Vector3.one * math.huge
-    BG.CFrame = part.CFrame
+    BG.CFrame = CFrame or part.CFrame
     BG.Name = 'BG'
 end
 
