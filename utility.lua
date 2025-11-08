@@ -1,10 +1,4 @@
-
-
-local genv = getgenv()
-if genv.stop then genv.stop() end
-if genv.load then return genv.load() end
-function genv.load()
-
+return getfenv((function()
 S = {
     w = workspace,
     p = game:GetService('Players'),
@@ -161,5 +155,4 @@ function print(tbl, indent)
 	oprint(formatting .. "}")
 end
   
-end
-return getfenv(genv.load())
+end)())
