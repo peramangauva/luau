@@ -15,7 +15,7 @@ LocalPlayer.CharacterAdded:Connect(function(char)
     Character = char
 end)
 
-function setBodyMovers(part, cframe, vel, force)
+function setBodyMovers(part, cframe)
     local cframe = cframe or part.CFrame
     local BP = part:FindFirstChildOfClass('BodyPosition')
     if not BP then
@@ -34,7 +34,7 @@ function setBodyMovers(part, cframe, vel, force)
     BG.P = 100000
     BG.D = 100
     BG.MaxTorque = Vector3.one * math.huge
-    BG.CFrame = cframe or part.CFrame
+    BG.CFrame = cframe
     BG.Name = 'BG'
 end
 
