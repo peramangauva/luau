@@ -48,13 +48,13 @@ function setBodyMovers(part, cframe, vel, force)
     end
     BV.MaxForce = Vector3.one * math.huge
     BV.P = 100000
-    BV.Velocity = vel
+    BV.Velocity = vel or Vector3.zero
 
     local BF = part:FindFirstChildOfClass('BodyForce')
     if not BF then
         BF = Instance.new('BodyVelocity')
     end
-    BF.Force = force
+    BF.Force = force or Vector3.zero
 end
 
 local function remBodyMovers(part)
