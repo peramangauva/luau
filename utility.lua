@@ -47,7 +47,7 @@ function setBodyMovers(part, cframe, vel, force)
 
     local BF = part:FindFirstChildOfClass('BodyForce')
     if not BF then
-        BF = Instance.new('BodyVelocity')
+        BF = Instance.new('BodyForce')
     end
     BF.Force = force or Vector3.zero
 end
