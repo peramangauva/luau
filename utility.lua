@@ -22,7 +22,7 @@ function setBodyMovers(part, cframe)
         BP = Instance.new('BodyPosition', part)
     end
     BP.P = 100000
-    BP.D = 100
+    BP.D = 1000
     BP.MaxForce = Vector3.one * math.huge
     BP.Position = cframe.Position
     BP.Name = 'BP'
@@ -32,7 +32,7 @@ function setBodyMovers(part, cframe)
         BG = Instance.new('BodyGyro', part)
     end
     BG.P = 100000
-    BG.D = 100
+    BG.D = 1000
     BG.MaxTorque = Vector3.one * math.huge
     BG.CFrame = cframe
     BG.Name = 'BG'
