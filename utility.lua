@@ -1,7 +1,8 @@
 
 
 local genv = getgenv()
-if genv.stop then genv.stop(); return genv.load() end
+if genv.stop then genv.stop() end
+if getgenv.load then return genv.load() end
 function genv.load()
 
 local S = {
