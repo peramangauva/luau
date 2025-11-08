@@ -5,7 +5,7 @@ if genv.stop then genv.stop() end
 if getgenv.load then return genv.load() end
 function genv.load()
 
-local S = {
+S = {
     w = workspace,
     p = game:GetService('Players'),
     ru = game:GetService('RunService'),
@@ -13,9 +13,9 @@ local S = {
     ui = game:GetService('UserInputService')
 }
 
-local LocalPlayer = S.p.LocalPlayer
-local Character = LocalPlayer.Character
-local Camera = S.w.CurrentCamera
+LocalPlayer = S.p.LocalPlayer
+Character = LocalPlayer.Character
+Camera = S.w.CurrentCamera
 
 LocalPlayer.CharacterAdded:Connect(function(char)
     Character = char
@@ -58,7 +58,7 @@ function setBodyMovers(part, cframe, vel, force)
     BF.Force = force or Vector3.zero
 end
 
-local function remBodyMovers(part)
+function remBodyMovers(part)
     local BP = part:FindFirstChildOfClass('BodyPosition')
     if BP then BP:Destroy() end
     local BG = part:FindFirstChildOfClass('BodyGyro')
@@ -71,22 +71,19 @@ end
 
 
 
-
-
-
-local function pointToLineDistance(point, linePoint, lineDirection)
+function pointToLineDistance(point, linePoint, lineDirection)
     local vectorToPoint = point - linePoint
     local crossProduct = vectorToPoint:Cross(lineDirection)
     return crossProduct.Magnitude / lineDirection.Magnitude
 end
 
-local function isPointInFrontOfCamera(point, cameraPosition, cameraDirection)
+function isPointInFrontOfCamera(point, cameraPosition, cameraDirection)
     local vectorToPoint = point - cameraPosition
     local dotProduct = vectorToPoint:Dot(cameraDirection)
     return dotProduct > 0
 end
 
-local function closestPointToLine(points, linePoint, lineDirection)
+function closestPointToLine(points, linePoint, lineDirection)
     local minDistance = math.huge
     local closestPoint = nil
     
@@ -104,7 +101,7 @@ local function closestPointToLine(points, linePoint, lineDirection)
 end
 
 
-local function getClosestPlayer1()
+function getClosestPlayer1()
     local closestPlayer = nil
     local shortestDistance = math.huge
 
@@ -121,7 +118,7 @@ local function getClosestPlayer1()
     return closestPlayer
 end
 
-local function getClosestPlayer2()
+function getClosestPlayer2()
     local cameraPosition = Camera.CFrame.Position
     local cameraDirection = Camera.CFrame.LookVector
     local map = {}
@@ -141,7 +138,7 @@ local function getClosestPlayer2()
 end
 
 
-local oprint = print
+oprint = print
 function print(tbl, indent)
 	local indent = indent or 0
 	local formatting = string.rep("  ", indent)
