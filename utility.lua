@@ -36,20 +36,6 @@ function setBodyMovers(part, cframe, vel, force)
     BG.MaxTorque = Vector3.one * math.huge
     BG.CFrame = part.CFrame
     BG.Name = 'BG'
-
-    local BV = part:FindFirstChildOfClass('BodyVelocity')
-    if not BV then
-        BV = Instance.new('BodyVelocity')
-    end
-    BV.MaxForce = Vector3.one * math.huge
-    BV.P = 100000
-    BV.Velocity = vel or Vector3.zero
-
-    local BF = part:FindFirstChildOfClass('BodyForce')
-    if not BF then
-        BF = Instance.new('BodyForce')
-    end
-    BF.Force = force or Vector3.zero
 end
 
 function remBodyMovers(part)
@@ -57,10 +43,6 @@ function remBodyMovers(part)
     if BP then BP:Destroy() end
     local BG = part:FindFirstChildOfClass('BodyGyro')
     if BG then BG:Destroy() end
-    local BV = part:FindFirstChildOfClass('BodyVelocity')
-    if BV then BV:Destroy() end
-    local BF = part:FindFirstChildOfClass('BodyForce')
-    if BF then BF:Destroy() end
 end
 
 
