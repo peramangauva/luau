@@ -2,7 +2,7 @@
 
 local genv = getgenv()
 if genv.stop then genv.stop() end
-if getgenv.load then return genv.load() end
+if genv.load then return genv.load() end
 function genv.load()
 
 S = {
