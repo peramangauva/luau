@@ -33,7 +33,7 @@ function setBodyMovers(part, cframe)
     end
     BG.P = 100000
     BG.D = 100
-		print("cframe:", cframe, typeof(cframe))
+		print("cframe:" .. tostring(cframe) .. tostring(typeof(cframe)))
     BG.MaxTorque = Vector3.one * math.huge
     BG.CFrame = cframe
     BG.Name = 'BG'
