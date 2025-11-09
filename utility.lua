@@ -16,6 +16,7 @@ LocalPlayer.CharacterAdded:Connect(function(char)
 end)
 
 function setBodyMovers(part, cframe)
+	if not part then return end
     local cframe = cframe or part.CFrame
 	local BP = part:FindFirstChildOfClass('BodyPosition')
     if not BP then
