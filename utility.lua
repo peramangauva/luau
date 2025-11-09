@@ -17,12 +17,13 @@ end)
 
 function setBodyMovers(part, cframe)
     local cframe = cframe or part.CFrame
-    local BP = part:FindFirstChildOfClass('BodyPosition')
+    local partMass = part:GetMass()
+	local BP = part:FindFirstChildOfClass('BodyPosition')
     if not BP then
         BP = Instance.new('BodyPosition', part)
     end
-    BP.P = 100000
-    BP.D = 1000
+    BP.P = partMass * 4444.4
+    BP.D = partMass * 133.3
     BP.MaxForce = Vector3.one * math.huge
     BP.Position = cframe.Position
     BP.Name = 'BP'
@@ -31,8 +32,8 @@ function setBodyMovers(part, cframe)
     if not BG then
         BG = Instance.new('BodyGyro', part)
     end
-    BG.P = 100000
-    BG.D = 1000
+    BG.P = partMass * 4444.4
+    BG.D = partMass * 133.3
     BG.MaxTorque = Vector3.one * math.huge
     BG.CFrame = cframe
     BG.Name = 'BG'
