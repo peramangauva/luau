@@ -39,6 +39,7 @@ function setBodyMovers(part, cframe)
 end
 
 function remBodyMovers(part)
+	if not part then return end
     local BP = part:FindFirstChildOfClass('BodyPosition')
     if BP then BP:Destroy() end
     local BG = part:FindFirstChildOfClass('BodyGyro')
