@@ -22,7 +22,7 @@ function setBodyMovers(part, cframe)
     if not BP then
         BP = Instance.new('BodyPosition', part)
     end
-    BP.P = partMass * 4444.4
+    BP.P = partMass * 44444
     BP.D = partMass * 133.3
     BP.MaxForce = Vector3.one * math.huge
     BP.Position = cframe.Position
@@ -32,7 +32,7 @@ function setBodyMovers(part, cframe)
     if not BG then
         BG = Instance.new('BodyGyro', part)
     end
-    BG.P = partMass * 4444.4
+    BG.P = partMass * 44444
     BG.D = partMass * 133.3
     BG.MaxTorque = Vector3.one * math.huge
     BG.CFrame = cframe
