@@ -1,8 +1,32 @@
 
 local SAVEPATH = 'AI.json'
 
-local hs = game:GetService('HttpsService')
-
+local hs = game and game:GetService('HttpService') or {
+    JSONEncode = function(self, t)
+        local parts = {}
+        for k, v in pairs(t) do
+            local key = type(k) == 'number' and k or string.format('%q', k)
+            local value
+            if type(v) == 'table' then
+                value = self:JSONEncode(v)
+            elseif type(v) == 'string' then
+                value = string.format('%q', v)
+            else -- numbarr
+                value = tostring(v)
+            end
+            table.insert(parts, string.format('[%s]=%s', key, value))
+        end
+        return '{' .. table.concat(parts, ',') .. '}'
+    end,
+    
+    JSONDecode = function(_, str)
+        local chunk, err = loadstring('return ' .. str)
+        if not chunk then
+            error('JSON decode error: ' .. err)
+        end
+        return chunk()
+    end
+}
 local NN = {}
 NN.__index = NN
 function NN.new(num_inputs, sizes)
