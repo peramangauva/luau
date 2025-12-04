@@ -84,8 +84,9 @@ end
 function NN:getdata()
     local data = {}
     for k, v in pairs(self) do
-        if typeof(v) == 'function' then continue end
-        data[k] = v
+        if typeof(v) ~= 'function' then
+        	data[k] = v
+        end
     end
     return data
 end
@@ -99,10 +100,10 @@ function NN:mutate(rate)
         local biases = layer[2]
         
         for i=1, num_weights do
-            weights[i] += (math.random()-0.5)*rate
+            weights[i] = weights[i] + (math.random()-0.5)*rate
         end 
         for i=1, num_biases do
-            biases[i] += (math.random()-0.5)*rate
+            biases[i] = biases[i] + (math.random()-0.5)*rate
         end
     end
 end
@@ -125,7 +126,7 @@ function NN:ff(inputs)
             local bias = biases[bias_index]
             local weighted_sum = 0
             for i, input in this_input do
-                weighted_sum += weights[i+weights_index] * input
+                weighted_sum = weighted_sum + weights[i+weights_index] * input
             end
             this_output[neuron_index] = math.max(0, weighted_sum + bias)
         end
