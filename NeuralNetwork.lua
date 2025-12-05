@@ -148,7 +148,7 @@ function NN:ff(inputs)
             local bias_index = neuron_index
             local bias = biases[bias_index]
             local weighted_sum = 0
-            for i, input in this_input do
+            for i, input in ipairs(this_input) do
                 weighted_sum = weighted_sum + weights[i+weights_index] * input
             end
             this_output[neuron_index] = math.max(0, weighted_sum + bias)
