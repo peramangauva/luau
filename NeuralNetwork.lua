@@ -1,6 +1,16 @@
 
 local SAVEPATH = 'AI.json'
 
+if not table.create then
+    table.create = function(count, value)
+        local value = value or 0
+        local t = {}
+        for i = 1, count do
+            t[i] = value
+        end
+        return t
+    end
+end
 local savefile = game and writefile or function(path, content)
     local file = io.open(path,'w')
     if not file then return end
