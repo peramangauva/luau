@@ -1,6 +1,19 @@
 
 local SAVEPATH = 'AI.json'
 
+local savefile = game and writefile or function(path, content)
+    local file = io.open(path,'w')
+    if not file then return end
+    file:write(content)
+    file:close()
+end
+local loadfile = game and readfile or function(path) return function()
+    local file = io.open(path,'r')
+    if not file then return end
+    local c = file:read()
+    file:close()
+    return c
+end end
 local hs = game and game:GetService('HttpService') or {
     JSONEncode = function(self, t)
         local parts = {}
@@ -137,9 +150,9 @@ function NN:ff(inputs)
 end
 
 function NN:save()
-    writefile(SAVEPATH, hs:JSONEncode(self:getdata()))
+    savefile(SAVEPATH, hs:JSONEncode(self:getdata()))
 end
 
 function NN.load()
-    return NN.new(hs:JSONDecode(readfile(SAVEPATH)()))
+    return NN.new(hs:JSONDecode(loadfile(SAVEPATH)()))
 end
