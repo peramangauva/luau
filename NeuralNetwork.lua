@@ -2,7 +2,7 @@
 
 --[[
 
-lua-luau hybrid code.
+lua-luau code (works on both).
 
 all use x = x + y instead of x += y
 
