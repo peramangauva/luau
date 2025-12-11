@@ -1,4 +1,5 @@
 
+-- made by peramangauva
 
 local coeff = 0.044715
 local coeff3 = coeff * 3
@@ -21,13 +22,15 @@ local function dGELU(x)
     return (1 + tanh_inner) / 2 + (0.5 * x * sech_sq * inner_deriv)
 end
     
-table.create = table.create or function(count, value)
-    local value = value or 0
-    local t = {}
-    for i = 1, count do
-        t[i] = value
+if not table.create then
+    table.create = function(count, value)
+        local value = value or 0
+        local t = {}
+        for i = 1, count do
+            t[i] = value
+        end
+        return t
     end
-    return t
 end
 
 local savefile = game and writefile or function(path, content)
