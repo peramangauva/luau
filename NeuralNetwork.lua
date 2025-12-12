@@ -302,13 +302,33 @@ function NN:ff(inputs, capture, passed)
 end
 
 function NN:save(path)
-    local data = hs:JSONEncode(self:getdata())
-    savefile(path, data)
+    local data = self:getdata()
+    local encoded = hs:JSONEncode(data)
+    if writefile then
+        writefile(path, encoded)
+    else
+        local f, err = io.open(path, "w")
+        if not f then error("save error: " .. err) end
+        f:write(encoded)
+        f:close()
+    end
+
     return self
 end
 
 function NN.load(path)
-    return NN.new(hs:JSONDecode(loadfile(path)()))
+    local content
+    if readfile then
+        content = readfile(path)
+    else
+        local f, err = io.open(path, "r")
+        if not f then error("load error: " .. err) end
+        content = f:read("*a")
+        f:close()
+    end
+    local data = hs:JSONDecode(content)
+    setmetatable(data, NN)
+    return data
 end
 
 return NN
