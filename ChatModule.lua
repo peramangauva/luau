@@ -1,6 +1,6 @@
 --!strict
 
-local Mod = {}
+Mod = {}
 
 type CommandBody = {
     Raw: string?,
@@ -16,39 +16,44 @@ type TextMessage = {
     Text: string
 }
 
-local plrs = game:GetSercice('Players')
-local tcs = game:GetService('TextChatService')
-local env = getfenv()
+plrs = game:GetService('Players')
+tcs = game:GetService('TextChatService')
+me = plrs.LocalPlayer
+senv = getfenv()
+genv = getgenv()
+env = setmetatable({},{__index=function(_,k)
+    return senv[k] or genv[k]
+end})
+Whitelist = {me}
 
-local me: Player = plrs.LocalPlayer
-
-local Whitelist: {Player} = {me}
-local Commands = {
-    ['test'] = {
-        Prefix = '--!',
-        RequireSpace = true
+Commands = {
+    ['!'] = {
+        Prefix = '',
+        RequireSpace = false,
         Callback = function(Body)
-            print('called t1')
-            print('full:',Body.Full)
-            print('raw:',Body.raw)
-            print('arg1:',Body.Args[1])
-            print('arg2:',Body.Args[2])
+            Mod.Connection:Disconnect()
+            print('exited')
         end
     },
-    ['test2'] = {
-        Prefix = 'wa',
-        RequireSpace = false
+    ['='] = {
+        Prefix = '',
+        RequireSpace = false,
         Callback = function(Body)
-            print('called t2')
-            print('full:',Body.Full)
-            print('raw:',Body.raw)
-            print('arg1:',Body.Args[1])
-            print('arg2:',Body.Args[2])
+            local code = Body.Raw
+            local result, err = loadstring(code)
+            if not result then
+                return warn(err)
+            end
+            setfenv(result, env)
+            local success, result = xpcall(result, debug.traceback)
+            if not success then
+                warn(result)
+            end
         end
     }
 }
 
-local function GetCommand(raw: string) -> TextCommand?
+function GetCommand(raw: string): TextCommand?
     local result: TextCommand?
     local lenCommand: number?
     for name, data in pairs(Commands) do
@@ -57,14 +62,14 @@ local function GetCommand(raw: string) -> TextCommand?
         local start: string = raw:sub(1, lenCommand)
         if start == command then
             result = {
-                Command = name,
+                Name = name,
                 Body = nil
             }
             break
         end
     end
     if result then
-        local rest: string = raw:sub(lenCommand)
+        local rest: string = raw:sub(lenCommand+1):match('^%s*(.-)%s*$')
         local args: {string | number | nil} = {}
         for _, value in ipairs(rest:split('&')) do
             local value: string | number | nil = value:match('^%s*(.-)%s*$')
@@ -89,24 +94,24 @@ local function GetCommand(raw: string) -> TextCommand?
     return result
 end
 
-local function ExecuteCommand(command: TextCommand)
-    local callback: () -> nil = Commands[command.Name].Callback
+function ExecuteCommand(command: TextCommand)
+    local callback = Commands[command.Name].Callback
     callback(command.Body)
 end
 
-local function processChatMessage(text: TextMessage)
-    print(text.Sender.Name, 'said', text.Text)
+function ProcessChatMessage(text: TextMessage)
+    --print(text.Sender.Name, 'said', text.Text)
 end
 
 local Connection = tcs.MessageReceived:Connect(function(msg: TextChatMessage)
-    local sender: Player? = msg.TextSource & plrs:GetPlayerByUserId(msg.TextSource.UserId)
+    local sender: Player | nil = msg.TextSource and plrs:GetPlayerByUserId(msg.TextSource.UserId)
     local raw: string = msg.Text:gsub('&lt;', '<')
         :gsub('&gt;', '>')
         :gsub('&quot;', '"')
         :gsub('&apos;', "'")
-        :gsub('&amp;', '&'))
+        :gsub('&amp;', '&')
     
-    if table.find(sender, Whitelist) then
+    if table.find(Whitelist, sender) then
         local command: TextCommand = GetCommand(raw)
         if command then
             ExecuteCommand(command)
@@ -116,13 +121,32 @@ local Connection = tcs.MessageReceived:Connect(function(msg: TextChatMessage)
     local text: TextMessage = {
         Sender = sender, Text = raw
     }
-    processChatMessage(text)
+    ProcessChatMessage(text)
 end)
 
-Mod.tcs = tcs,
+Mod.tcs = tcs
+Mod.senv = senv
 Mod.Commands = Commands
+Mod.Whitelist = Whitelist
+Mod.Connection = Connection
 Mod.GetCommand = GetCommand
 Mod.ExecuteCommand = ExecuteCommand
-Mod.Connection = Connection
+Mod.ProcessChatMessage = ProcessChatMessage
 
 return Mod
+
+--[[
+
+
+local f, e = loadfile('github/ChatModule.lua')
+
+if not f then
+    error(e)
+end
+
+local chat = f()
+
+
+]]
+
+
