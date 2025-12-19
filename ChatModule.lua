@@ -9,7 +9,7 @@ type CommandBody = {
     Full: string
 }
 type TextCommand = {
-    Command: string,
+    Name: string,
     Body: CommandBody?
 }
 type TextMessage = {
