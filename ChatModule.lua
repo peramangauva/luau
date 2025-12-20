@@ -1,19 +1,30 @@
 --!strict
 --!optimize 2
 
+--[[
+module.Whitelist is a list of players that can use commands.
+
+commands predefined:
+1. "/e lua [code]"  -> executes code (module environment)
+example: /e lua print('hello!', Whitelist)
+output: hello! table at 0xsomething
+2. "/e ext" -> stops the chat commands
+
+]]
+
 Mod = {}
 
-type Argument = string | number | nil
+export type Argument = string | number | nil
 type CommandBody = {
     Raw: string,
     Args: {Argument},
     Full: string
 }
-type TextCommand = {
+export type TextCommand = {
     Name: string,
     Body: CommandBody
 }
-type TextMessage = {
+export type TextMessage = {
     Sender: Player,
     Text: string
 }
@@ -29,19 +40,20 @@ end})
 Whitelist = {me}
 
 Commands = {
-    ['!'] = {
-        Prefix = '',
-        RequireSpace = false,
+    ['ext'] = {
+        Prefix = '/e ',
+        RequireSpace = true,
         Callback = function(Body)
             Mod.Connection:Disconnect()
-            print('exited')
+            warn('ChatModule disabled')
         end
     },
-    ['='] = {
-        Prefix = '',
-        RequireSpace = false,
+    ['lua'] = {
+        Prefix = '/e ',
+        RequireSpace = true,
         Callback = function(Body)
             local code = Body.Raw
+            warn('running code:', code)
             local result, err = loadstring(code)
             if not result then
                 return warn(err)
@@ -136,5 +148,7 @@ Mod.Connection = Connection
 Mod.GetCommand = GetCommand
 Mod.ExecuteCommand = ExecuteCommand
 Mod.ProcessChatMessage = ProcessChatMessage
+
+warn('ChatModule loaded')
 
 return Mod
