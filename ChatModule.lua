@@ -3,14 +3,15 @@
 
 Mod = {}
 
+type Argument = string | number | nil
 type CommandBody = {
-    Raw: string?,
-    Args: {string?},
+    Raw: string,
+    Args: {Argument},
     Full: string
 }
 type TextCommand = {
     Name: string,
-    Body: CommandBody?
+    Body: CommandBody
 }
 type TextMessage = {
     Sender: Player,
@@ -55,26 +56,25 @@ Commands = {
 }
 
 function GetCommand(raw: string): TextCommand?
-    local result: TextCommand?
-    local lenCommand: number?
+    local isCommand: boolean = false
+    local cmdName: string = ''
+    local lenCommand: number = 0
     for name, data in pairs(Commands) do
         local command: string = (data.Prefix or '')..name..(data.RequireSpace and ' ' or '')
         lenCommand = #command
         local start: string = raw:sub(1, lenCommand)
         if start == command then
-            result = {
-                Name = name,
-                Body = nil
-            }
+            cmdName = name
+            isCommand = true
             break
         end
     end
-    if result then
+    if isCommand then
         local rest: string = raw:sub(lenCommand+1):match('^%s*(.-)%s*$')
-        local args: {string | number | nil} = {}
+        local args: {Argument} = {}
         for _, value in ipairs(rest:split('&')) do
-            local value: string | number | nil = value:match('^%s*(.-)%s*$')
-            local r: string | number | nil
+            local value: Argument = value:match('^%s*(.-)%s*$')
+            local r: Argument
             local num: number? = tonumber(value)
             if value == '' or value == 'nil' then
                 r = nil
@@ -90,9 +90,12 @@ function GetCommand(raw: string): TextCommand?
             Args = args,
             Full = raw
         }
-        result.Body = body
+        local command: TextCommand = {
+            Name = cmdName,
+            Body = body
+        }
+        return command
     end
-    return result
 end
 
 function ExecuteCommand(command: TextCommand)
@@ -105,7 +108,7 @@ function ProcessChatMessage(text: TextMessage)
 end
 
 local Connection = tcs.MessageReceived:Connect(function(msg: TextChatMessage)
-    local sender: Player | nil = msg.TextSource and plrs:GetPlayerByUserId(msg.TextSource.UserId)
+    local sender: Player? = msg.TextSource and plrs:GetPlayerByUserId(msg.TextSource.UserId)
     local raw: string = msg.Text:gsub('&lt;', '<')
         :gsub('&gt;', '>')
         :gsub('&quot;', '"')
@@ -135,19 +138,3 @@ Mod.ExecuteCommand = ExecuteCommand
 Mod.ProcessChatMessage = ProcessChatMessage
 
 return Mod
-
---[[
-
-
-local f, e = loadfile('github/ChatModule.lua')
-
-if not f then
-    error(e)
-end
-
-local chat = f()
-
-
-]]
-
-
