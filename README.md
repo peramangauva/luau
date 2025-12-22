@@ -1,4 +1,3 @@
 # hi
-uhh my scripts
-yeah thats it
-use with caution!!!
+my roblox is peramangauva
+my discord is xines__
