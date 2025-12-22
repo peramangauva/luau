@@ -1,3 +1,4 @@
+--!native
 --!optimize 2
 
 if not isfolder('saved_ais') then
