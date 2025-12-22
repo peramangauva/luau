@@ -154,7 +154,7 @@ function Manager:Save(Genome, file)
     writefile('saved_ais/'..file, buffer.tostring(Genome))
 end
 function Manager:Load(file)
-    return buffer.fromstring(readfile('saves_ais/'..file))
+    return buffer.fromstring(readfile('saved_ais/'..file))
 end
 
 Module.Manager = Manager
