@@ -1,5 +1,9 @@
 --!optimize 2
 
+if not isfolder('saved_ais') then
+    makefolder('saved_ais')
+end
+
 local Module = {}
 
 local max = math.max
@@ -144,6 +148,13 @@ function Manager:Feedforward(Genome, Inputs)
         Output[i] = brf32(OutputBuffer, (i-1)*4)
     end
     return Output
+end
+
+function Manager:Save(Genome, file)
+    writefile('saved_ais/'..file, buffer.tostring(Genome))
+end
+function Manager:Load(file)
+    return buffer.fromstring(readfile('saves_ais/'..file))
 end
 
 Module.Manager = Manager
