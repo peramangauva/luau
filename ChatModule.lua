@@ -41,15 +41,15 @@ Whitelist = {me}
 
 Commands = {
     ['ext'] = {
-        Prefix = '/e ',
-        RequireSpace = true,
+        Prefix = '.',
+        RequireSpace = false,
         Callback = function(Body)
             Mod.Connection:Disconnect()
             warn('ChatModule disabled')
         end
     },
     ['lua'] = {
-        Prefix = '/e ',
+        Prefix = '.',
         RequireSpace = true,
         Callback = function(Body)
             local code = Body.Raw
@@ -58,7 +58,7 @@ Commands = {
             if not result then
                 return warn(err)
             end
-            setfenv(result, env)
+            setfenv(result, Mod.env)
             local success, result = xpcall(result, debug.traceback)
             if not success then
                 warn(result)
@@ -141,7 +141,7 @@ local Connection = tcs.MessageReceived:Connect(function(msg: TextChatMessage)
 end)
 
 Mod.tcs = tcs
-Mod.senv = senv
+Mod.env = env
 Mod.Commands = Commands
 Mod.Whitelist = Whitelist
 Mod.Connection = Connection
