@@ -1,5 +1,7 @@
-# hi
 my roblox is peramangauva
+
 my discord is xines__
+
 yes i did write all the code myself
-no i wont be updating any existing code
+
+i most likely wont be changing any code i write (unless there are bugs)
