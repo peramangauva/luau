@@ -7,6 +7,12 @@ end
 
 local Module = {}
 
+local senv = getfenv()
+local genv = getgenv()
+local env = setmetatable({},{__index=function(_,k)
+    return senv[k] or genv[k]
+end})
+
 local max = math.max
 local tanh = math.tanh
 local sqrt = math.sqrt
@@ -161,5 +167,8 @@ end
 Module.Manager = Manager
 Module.BufferToTable = BufferToTable
 Module.TableToBuffer = TableToBuffer
+Module.ReLU = ReLU
+Module.Tanh = tanh
+Module.env = env
 
 return Module

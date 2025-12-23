@@ -1,14 +1,17 @@
 --!strict
+--!native
 --!optimize 2
 
 --[[
 module.Whitelist is a list of players that can use commands.
 
+replace ProcessChatMessage(text: TextMessage)
+
 commands predefined:
-1. "/e lua [code]"  -> executes code (module environment)
-example: /e lua print('hello!', Whitelist)
+1. ".lua [code]"  -> executes code (module environment)
+example: .lua print('hello!', Whitelist)
 output: hello! table at 0xsomething
-2. "/e ext" -> stops the chat commands
+2. ".ext" -> stops the chat commands
 
 ]]
 
